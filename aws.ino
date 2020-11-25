@@ -12,34 +12,23 @@
 
 WiFiClientSecure net = WiFiClientSecure();
 MQTTClient client = MQTTClient(256);
-
-//giving esp32 a static ip address
-IPAddress ip(192, 168, 1, 43); //ESP32 IP
-IPAddress gateway(192, 168, 1, 1); //Router IP
-IPAddress subnet(255, 255, 255, 0);
-IPAddress dns(8, 8, 8, 8);
-   
   
 void connectAWS()
 {
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
 
-  if (!WiFi.config(ip, gateway, subnet, dns)) {  // configure wifi
-    Serial.println("STA Failed to configure");
-  }
-
-  
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD); // connect to Wifi
   Serial.println("Connecting to Wi-Fi");
 
+  // wait until wifi connected
   while (WiFi.status() != WL_CONNECTED){
     delay(500);
     Serial.print(".");
   }
   
   delay(1000);
-  Serial.print("Connected, IP Address: ");
+  Serial.print("Connected, IP Address: ");  // print ip address
   Serial.println(WiFi.localIP());
   delay(100);
   
@@ -56,9 +45,9 @@ void connectAWS()
 
   Serial.println("Connecting to AWS IOT");
 
+  // while not connected to aws
   while (!client.connect(THINGNAME)) {
-    Serial.print(WiFi.status());
-    Serial.print(".");
+    if(WiFi.status()== WL_CONNECTED) Serial.println("Connected to WiFi, Connecting to AWS");
     delay(500);
   }
 
@@ -101,8 +90,13 @@ void setup() {
 void loop() {
   if(client.connected()) {
       publishMessage(); // send a test message
+      Serial.println("Test message Sent");
   }
-  Serial.println(WiFi.status()); // check if wifi is still connected(3)
+  else { // if disconnected from aws, see if wifi is still connected
+    Serial.println("Client Disconnected");
+    if(WiFi.status()== WL_CONNECTED) Serial.println("Still connected to Wifi");
+    else Serial.println("Also Disconnected From Wifi");
+  }
   client.loop();
   delay(5000);
 }
