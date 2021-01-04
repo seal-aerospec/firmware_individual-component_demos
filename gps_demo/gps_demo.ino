@@ -12,12 +12,12 @@ void loop()
 
   if(gpsDataValid())
   {
-    long latitude = getLatitude();
-    long longitude = getLongitude();
+    double latitude = getLatitude();
+    double longitude = getLongitude();
     Serial.print("Latitude (deg): ");
     Serial.println(latitude, 6);  
     Serial.print("Longitude (deg): ");
-    Serial.println(longitude, 6);  
-  }
-  delay(250); //Don't pound too hard on the I2C bus
+    Serial.println(longitude, 6);
+  }  
+  delay(1000); //Don't pound too hard on the I2C bus
 }

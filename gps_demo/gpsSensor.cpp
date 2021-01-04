@@ -15,7 +15,6 @@ MicroNMEA nmea(nmeaBuffer, sizeof(nmeaBuffer));
 
 bool setUpGpsSensor() {
   Wire.begin();
-  Serial.begin(115200);
   Serial.println("Initializing GPS");
   if (myGPS.begin(Wire, 0x42) == false)  //0x42 is default address
   {
@@ -47,15 +46,15 @@ bool gpsDataValid() {
   }
 }
 
-long getLatitude() {
+double getLatitude() {
   long latitude_mdeg = nmea.getLatitude();
-  long latitude = latitude_mdeg / 1000000.;  // convert nmea data
+  double latitude = latitude_mdeg / 1000000.;  // convert nmea data
   return latitude;
 }
 
-long getLongitude() {
+double getLongitude() {
   long longitude_mdeg = nmea.getLongitude();
-  long longitude = longitude_mdeg / 1000000.;  // convert nmea data
+  double longitude = longitude_mdeg / 1000000.;  // convert nmea data
   return longitude;
 }
 
