@@ -1,8 +1,18 @@
 #include "sdCard.h"
 
+#define VSPI_SS  15
+
+SPIClass * vspi = NULL;
+
+
 void setup(){
     Serial.begin(115200);
-    if(!SD.begin()){
+    // Choose chip select pin
+    vspi = new SPIClass(VSPI);
+    vspi->begin();
+    pinMode(VSPI_SS, OUTPUT); //VSPI SS
+
+    if(!SD.begin(VSPI_SS, *vspi)){
         Serial.println("Card Mount Failed");
         return;
     }
