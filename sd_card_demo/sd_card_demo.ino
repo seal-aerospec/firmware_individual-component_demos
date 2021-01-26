@@ -1,5 +1,8 @@
 #include "sdCard.h"
 
+//CLK -> 18
+//DO -> 5
+//DI -> 23
 #define VSPI_SS  15
 
 SPIClass * vspi = NULL;
