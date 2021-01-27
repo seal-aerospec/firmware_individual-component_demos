@@ -1,12 +1,5 @@
 #include "sdCard.h"
 
-//bool setUpSdCard() {
-//  if(!SD.begin()){
-//        Serial.println("Card Mount Failed");
-//        return false;
-//  }
-//  return true;
-//}
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
     Serial.printf("Listing directory: %s\n", dirname);
@@ -166,8 +159,8 @@ void testFileIO(fs::FS &fs, const char * path){
 }
 
 bool sdCardInserted() {
-  pinMode(27, INPUT);
-  bool insert = digitalRead(27) == HIGH;
+  pinMode(CD, INPUT);
+  bool insert = digitalRead(CD) == HIGH;
   if(!insert) {
     Serial.println("SD Card not inserted");
   }

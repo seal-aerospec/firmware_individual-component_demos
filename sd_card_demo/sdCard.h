@@ -5,7 +5,7 @@
 #include "SD.h"
 #include "SPI.h"
 
-//bool setUpSdCard();
+#define CD 35
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
 
