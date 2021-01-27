@@ -6,6 +6,11 @@
 #include "SparkFun_Ublox_Arduino_Library.h" //http://librarymanager/All#SparkFun_Ublox_GPS
 #include <MicroNMEA.h> //http://librarymanager/All#MicroNMEA
 
+#define INT 32
+#define SAFE 25
+#define RST 4
+#define PPS 14
+
 // Sets up I2C connection for GPS sensor
 // Returns true if connected to GPS properly
 bool setUpGpsSensor();
@@ -24,5 +29,13 @@ double getLatitude();
 
 // Returns longitude
 double getLongitude();
+
+// Return altitude in m
+double getAltitude();
+
+
+void printTime();
+
+void reset();
 
 #endif

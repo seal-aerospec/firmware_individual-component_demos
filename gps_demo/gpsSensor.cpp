@@ -14,6 +14,10 @@ char nmeaBuffer[100];
 MicroNMEA nmea(nmeaBuffer, sizeof(nmeaBuffer));
 
 bool setUpGpsSensor() {
+  pinMode(RST, OUTPUT);
+  digitalWrite(RST, HIGH);
+  pinMode(INT, INPUT);
+  pinMode(SAFE, INPUT);
   Wire.begin();
   Serial.println("Initializing GPS");
   if (myGPS.begin(Wire, 0x42) == false)  //0x42 is default address
@@ -56,6 +60,64 @@ double getLongitude() {
   long longitude_mdeg = nmea.getLongitude();
   double longitude = longitude_mdeg / 1000000.;  // convert nmea data
   return longitude;
+}
+
+double getAltitude() {
+  long altitude = 0;
+  nmea.getAltitude(altitude);
+  return (double)altitude / 1000.;
+}
+
+void printTime() {
+  Serial.print(nmea.getYear());
+  Serial.print("-");
+  Serial.print(nmea.getMonth());
+  Serial.print("-");
+  Serial.print(nmea.getDay());
+  Serial.print(" ");
+  Serial.print(nmea.getHour());
+  Serial.print(":");
+  Serial.print(nmea.getMinute());
+  Serial.print(":");
+  Serial.print(nmea.getSecond());
+
+  Serial.print("  Time is ");
+  if (myGPS.getTimeValid() == false)
+  {
+    Serial.print("not ");
+  }
+  Serial.print("valid  Date is ");
+  if (myGPS.getDateValid() == false)
+  {
+    Serial.print("not ");
+  }
+  Serial.print("valid");
+
+  Serial.println();
+}
+
+bool changeI2CAddress(byte newAddress) {
+   myGPS.setI2CAddress(newAddress); //Change I2C address of this device
+  //Device's I2C address is stored to memory and loaded on each power-on
+
+  if (myGPS.begin(Wire, newAddress) == true)
+  {
+    myGPS.saveConfiguration(); //Save the current settings to flash and BBR
+    
+    Serial.print("Address successfully changed to 0x");
+    Serial.println(newAddress, HEX);
+    Serial.print("Now load another example sketch using .begin(Wire, 0x");
+    Serial.print(newAddress, HEX);
+    Serial.println(") to use this GPS module");
+    Serial.println("Freezing...");
+    while (1);
+  }
+}
+
+void reset() {
+  digitalWrite(RST, LOW);
+  delay(10);
+  digitalWrite(RST, HIGH);
 }
 
 //This function gets called from the SparkFun Ublox Arduino Library, checkUblox()

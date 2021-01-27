@@ -1,5 +1,7 @@
 #include "gpsSensor.h"
 
+// SDA -> 21
+// SCL ->22
 void setup()
 {
   Serial.begin(115200);
@@ -18,6 +20,7 @@ void loop()
     Serial.println(latitude, 6);  
     Serial.print("Longitude (deg): ");
     Serial.println(longitude, 6);
+    printTime();
   }  
   delay(1000); //Don't pound too hard on the I2C bus
 }
