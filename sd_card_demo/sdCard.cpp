@@ -164,3 +164,12 @@ void testFileIO(fs::FS &fs, const char * path){
     Serial.printf("%u bytes written for %u ms\n", 2048 * 512, end);
     file.close();
 }
+
+bool sdCardInserted() {
+  pinMode(27, INPUT);
+  bool insert = digitalRead(27) == HIGH;
+  if(!insert) {
+    Serial.println("SD Card not inserted");
+  }
+  return insert;
+}

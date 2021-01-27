@@ -10,22 +10,28 @@ SPIClass * vspi = NULL;
 
 void setup(){
     Serial.begin(115200);
+
+    // Test if SD card is inserted
+    while(!sdCardInserted()) {
+     delay(1000); 
+    }
+    
     // Choose chip select pin
     vspi = new SPIClass(VSPI);
     vspi->begin();
     pinMode(VSPI_SS, OUTPUT); //VSPI SS
-
+    // initialize SD Card
     if(!SD.begin(VSPI_SS, *vspi)){
         Serial.println("Card Mount Failed");
         return;
     }
-    uint8_t cardType = SD.cardType();
 
+    // Check Card type
+    uint8_t cardType = SD.cardType();
     if(cardType == CARD_NONE){
         Serial.println("No SD card attached");
         return;
     }
-
     Serial.print("SD Card Type: ");
     if(cardType == CARD_MMC){
         Serial.println("MMC");
@@ -36,7 +42,7 @@ void setup(){
     } else {
         Serial.println("UNKNOWN");
     }
-
+    // Print card capcacity
     uint64_t cardSize = SD.cardSize() / (1024 * 1024);
     Serial.printf("SD Card Size: %lluMB\n", cardSize);
 

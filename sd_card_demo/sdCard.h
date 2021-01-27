@@ -25,4 +25,6 @@ void deleteFile(fs::FS &fs, const char * path);
 
 void testFileIO(fs::FS &fs, const char * path);
 
+bool sdCardInserted();
+
 #endif
