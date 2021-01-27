@@ -1,15 +1,16 @@
 #include "tmpHumiditySensor.h"
 
 void setup(){
-  Serial.begin(9600);
-
+  Serial.begin(115200);
   setUpEnvSensor();
 }
 
 void loop(){
   Serial.print("Temp = ");
-  Serial.println(readTemperature());
+  Serial.print(readTemperature());
+  Serial.println(" C");
   Serial.print("Humidity = ");
-  Serial.println(readHumidity());
+  Serial.print(readHumidity());
+  Serial.println(" %");
   delay(1000);
 }
