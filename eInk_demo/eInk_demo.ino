@@ -14,8 +14,8 @@
 #define EPD_DC      17
 #define SRAM_CS     16
 #define EPD_RESET   4 // can set to -1 and share with microcontroller Reset!
-#define EPD_BUSY    -1 // can set to -1 to not use a pin (will wait a fixed delay)
-#define EPD_ENA     2 // set low to turn off display
+#define EPD_BUSY    34 // can set to -1 to not use a pin (will wait a fixed delay) 
+#define EPD_ENA     27 // set low to turn off display
 
 #define FLEXIBLE_213
 #define COLOR1 EPD_BLACK
@@ -37,14 +37,26 @@ void resetEInk() {
   digitalWrite(EPD_RESET, LOW);
 }
 
+bool isBusy() {
+  bool busy =  digitalRead(EPD_BUSY) == LOW;
+  if(busy) {
+    Serial.println("Busy");
+  }
+  return busy;
+}
+
 void setup(void) {
   Serial.begin(115200);
   Serial.print("Hello! EPD Test");
-  
+
+  pinMode(EPD_BUSY, INPUT);
   pinMode(EPD_RESET, OUTPUT);
+  digitalWrite(EPD_RESET, LOW);
   pinMode(EPD_ENA, OUTPUT);
+  displayPower(true);
   // Init 2.13" 212x104 Eink display
   Adafruit_IL0373 display(212, 104, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, EPD_BUSY);
+  delay(500);
   display.begin();
   
   #if defined(FLEXIBLE_213) || defined(FLEXIBLE_290)
@@ -54,10 +66,7 @@ void setup(void) {
   #endif
 
   Serial.println("Initialized");
-
   display.setRotation(2);
-  
-  displayPower(true);
   
   // large block of text
   display.clearBuffer();
@@ -68,11 +77,9 @@ void setup(void) {
   display.setTextColor(EPD_BLACK);
   display.print("Is this working? I sure hope so.");
   display.display();
-
   displayPower(false);
   
-  
-
+//  delay(10 * 1000);
 //  display.clearBuffer();
 //  for (int16_t i=0; i<display.width(); i+=4) {
 //    display.drawLine(0, 0, i, display.height()-1, COLOR1);
