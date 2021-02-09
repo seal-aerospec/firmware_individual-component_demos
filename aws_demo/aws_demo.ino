@@ -6,6 +6,9 @@
 #include <ArduinoJson.h>
 #include "WiFi.h"
 
+// unique device id
+#define DEVICE_ID 1
+
 // The MQTT topics that this device should publish/subscribe
 #define AWS_IOT_PUBLISH_TOPIC   "esp32/pub"
 #define AWS_IOT_SUBSCRIBE_TOPIC "esp32/sub"
@@ -65,7 +68,9 @@ void connectAWS()
 void publishMessage()
 {
   StaticJsonDocument<200> doc;
-  doc["time"] = millis();
+  doc["DeviceID"] = DEVICE_ID;
+  String timestamp = String(millis());
+  doc["timestamp"] = timestamp;
   doc["sensor_a0"] = analogRead(0);
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer); // print to client
@@ -88,6 +93,7 @@ void setup() {
 }
 
 void loop() {
+  // Sends a msg every 10s if connected
   if(client.connected()) {
       publishMessage(); // send a test message
       Serial.println("Test message Sent");
@@ -98,5 +104,5 @@ void loop() {
     else Serial.println("Also Disconnected From Wifi");
   }
   client.loop();
-  delay(5000);
+  delay(10000);
 }
