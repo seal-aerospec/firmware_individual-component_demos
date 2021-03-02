@@ -7,7 +7,6 @@ PM25_AQI_Data pmData;
 void setUpPMSensor(){
   
   pinMode(pmConsts::PM_RST, OUTPUT);
-  //pinMode(pmConsts::PM_SET, INPUT);
   digitalWrite(pmConsts::PM_RST, HIGH);
   
   //set pins for i2c
@@ -28,4 +27,10 @@ PM25_AQI_Data pm25(){
   Serial.println("AQI reading success");
 
   return pmData;
+}
+
+void reset() {
+  digitalWrite(pmConsts::PM_RST, LOW);
+  delay(10);
+  digitalWrite(pmConsts::PM_RST, HIGH);
 }

@@ -17,4 +17,5 @@ void setUpPMSensor();
 
 PM25_AQI_Data pm25();
 
+void reset();
 #endif
