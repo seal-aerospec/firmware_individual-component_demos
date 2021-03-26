@@ -1,2 +1,2 @@
 # Firmware
-Aerospec firmware for the esp-32
+Aerospec firmware demos for individual sensors on the ESP-32. 
