@@ -1,12 +1,6 @@
 #include "sdCard.h"
 
-//CLK -> 18
-//DO -> 5
-//DI -> 23
-#define VSPI_SS  15
-
 SPIClass * vspi = NULL;
-
 
 void setup(){
     Serial.begin(115200);
@@ -51,10 +45,16 @@ void setup(){
     //listDir(SD, "/", 0);
     //removeDir(SD, "/mydir");
     //listDir(SD, "/", 2);
-    writeFile(SD, "/hello.txt", "Hello ");
-    appendFile(SD, "/hello.txt", "World!\n");
-    appendFile(SD, "/hello.txt", "DEF ");
-    readFile(SD, "/hello.txt");
+    // if(SD.exists("/hello.txt")) {
+    //   Serial.println("hello file exists");
+      writeFile(SD, "/hello.txt", "Hello ");
+      appendFile(SD, "/hello.txt", "World!\n");
+      appendFile(SD, "/hello.txt", "DEF ");
+      readFile(SD, "/hello.txt");
+    //}
+    // else {
+    //   Serial.println("hello file doesn't exist");
+    // }
     //deleteFile(SD, "/foo.txt");
     //renameFile(SD, "/hello.txt", "/foo.txt");
     //readFile(SD, "/foo.txt");
