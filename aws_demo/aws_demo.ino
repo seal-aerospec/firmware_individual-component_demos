@@ -19,7 +19,7 @@ MQTTClient client = MQTTClient(256);
 void connectAWS()
 {
   WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
+//  WiFi.disconnect();
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD); // connect to Wifi
   Serial.println("Connecting to Wi-Fi");
