@@ -8,6 +8,6 @@ void setup () {
 }
 
 void loop () {
-  DateTime now = getDateTime();
-  delay(3000);
+  getDateTime();
+  delay(1000);
 }

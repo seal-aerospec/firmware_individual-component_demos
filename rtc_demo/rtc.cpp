@@ -7,7 +7,8 @@ bool initRtc() {
   if (! rtc.begin()) {
     Serial.println("Couldn't find RTC");
     Serial.flush();
-    abort();
+    while (1) delay(10);
+    return false;
   }
 
   if (rtc.lostPower()) {
@@ -17,43 +18,37 @@ bool initRtc() {
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
     // This line sets the RTC with an explicit date & time, for example to set
     // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+    //rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
-  
-  // When time needs to be re-set on a previously configured device, the
-  // following line sets the RTC to the date & time this sketch was compiled
-  // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  // This line sets the RTC with an explicit date & time, for example to set
-  // January 21, 2014 at 3am you would call:
-  // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+  return true;
 }
 
 DateTime getDateTime() {
-  DateTime now = rtc.now();
+  DateTime current = rtc.now();
 
-  Serial.print(now.year(), DEC);
+  Serial.print(current.year(), DEC);
   Serial.print('/');
-  Serial.print(now.month(), DEC);
+  Serial.print(current.month(), DEC);
   Serial.print('/');
-  Serial.print(now.day(), DEC);
+  Serial.print(current.day(), DEC);
   Serial.print(" (");
-  Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
+  Serial.print(daysOfTheWeek[current.dayOfTheWeek()]);
   Serial.print(") ");
-  Serial.print(now.hour(), DEC);
+  Serial.print(current.hour(), DEC);
   Serial.print(':');
-  Serial.print(now.minute(), DEC);
+  Serial.print(current.minute(), DEC);
   Serial.print(':');
-  Serial.print(now.second(), DEC);
+  Serial.print(current.second(), DEC);
   Serial.println();
 
   Serial.print(" since midnight 1/1/1970 = ");
-  Serial.print(now.unixtime());
+  Serial.print(current.unixtime());
   Serial.print("s = ");
-  Serial.print(now.unixtime() / 86400L);
+  Serial.print(current.unixtime() / 86400L);
   Serial.println("d");
 
   // calculate a date which is 7 days, 12 hours, 30 minutes, 6 seconds into the future
-  DateTime future (now + TimeSpan(7,12,30,6));
+  DateTime future (current + TimeSpan(7,12,30,6));
 
   Serial.print(" now + 7d + 12h + 30m + 6s: ");
   Serial.print(future.year(), DEC);
@@ -74,5 +69,5 @@ DateTime getDateTime() {
   Serial.println(" C");
 
   Serial.println();
-  return now;
+  return current;
 }

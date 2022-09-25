@@ -6,10 +6,10 @@
 #include <Adafruit_PM25AQI.h>
 
 namespace pmConsts{
-  constexpr int PM_SDA {21};
+  constexpr int PM_SDA {23};
   constexpr int PM_SCL {22};
-  constexpr int PM_RST {4};
-  constexpr int PM_SET {15};
+  constexpr int PM_RST {A0};
+  constexpr int PP5V0_EN  {13};
   constexpr int PM_I2C_FREQ {100000};
 }
 

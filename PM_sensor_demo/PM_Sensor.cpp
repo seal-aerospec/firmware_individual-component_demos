@@ -7,16 +7,18 @@ PM25_AQI_Data pmData;
 void setUpPMSensor(){
   
   pinMode(pmConsts::PM_RST, OUTPUT);
+  pinMode(pmConsts::PP5V0_EN,OUTPUT);
   digitalWrite(pmConsts::PM_RST, HIGH);
+  digitalWrite(pmConsts::PP5V0_EN,HIGH);
   
-  //set pins for i2c
-  pmI2C.begin(pmConsts::PM_SDA, pmConsts::PM_SCL, pmConsts::PM_I2C_FREQ);
+  //set pins for i2c  
   pmSensor = Adafruit_PM25AQI();
   delay(1000);
-  if (! pmSensor.begin_I2C(&pmI2C)) {      // connect to the sensor over I2C
+  while (! pmSensor.begin_I2C()) {      // connect to the sensor over I2C
     Serial.println("Could not find PM 2.5 sensor!");
-    while (1) delay(10);
+    delay(500);
   }
+  Serial.println("PM2.5 sensor found!");
 }
 
 PM25_AQI_Data pm25(){

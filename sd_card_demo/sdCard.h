@@ -5,11 +5,8 @@
 #include "SD.h"
 #include "SPI.h"
 
-//CLK -> 18
-//DO -> 5
-//DI -> 23
-#define VSPI_SS 13
-#define CD 35
+#define VSPI_SS 14 //SD_CS 
+#define CD 35 //DC
 
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
 
