@@ -1,13 +1,12 @@
 // Checking battery voltage
 #include "battery.h"
 
-
+int adcRead = batteryLevel();
 void setup() {
   Serial.begin(115200);
-  int adcRead = batteryLevel();
-  Serial.println(adcRead);
 }
 
 void loop() {
-  
+  delay(1000);
+  Serial.println(adcRead);
 }
